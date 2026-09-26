@@ -130,8 +130,7 @@ Find the best spatial dataset and a directly usable map endpoint.`;
       tools: [{ google_search: {} }],
       generationConfig: {
         temperature: 0.15,
-        maxOutputTokens: 4096,
-        responseMimeType: "application/json"
+        maxOutputTokens: 4096
       }
     })
   });
