@@ -203,6 +203,22 @@ const server = http.createServer(async (req, res) => {
   }
 });
 
-server.listen(PORT, "0.0.0.0", () => {
+server.listen(PORT, "0.0.0.0", async () => {
   console.log(`AINO agent listening on ${PORT}`);
+
+  if (process.env.RUN_SMOKE_TEST === "1" && GEMINI_API_KEY) {
+    try {
+      const result = await research({
+        query: "Find the official Cologne (Köln) Stadtbezirke district boundaries and return the best directly mappable authoritative dataset."
+      });
+      console.log("SMOKE_TEST_RESULT", JSON.stringify({
+        summary: result.summary,
+        firstDataset: result.datasets?.[0] || null,
+        mapAction: result.mapAction || null,
+        meta: result.meta || null
+      }));
+    } catch (err) {
+      console.error("SMOKE_TEST_ERROR", err?.message || err);
+    }
+  }
 });
