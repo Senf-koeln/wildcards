@@ -99,6 +99,7 @@ Return JSON only with this shape:
     "crs": "EPSG code/name or null",
     "geometryType": "Polygon|Point|LineString|unknown",
     "license": "license or null",
+    "populationJoin": {"url":"CSV or JSON table URL, or null","sourceUrl":"population table metadata URL","format":"csv|json","delimiter":",","recordsKey":"JSON array key or null","geometryKey":"exact boundary identifier field","dataKey":"exact table identifier field","populationField":"table population column or null","densityField":"table density column or null","densityUnit":"people/km2|people/ha|people/mi2 or null","referenceYear":"four-digit year","geography":"actual geography","filter":null},
     "populationMapping": {"populationField":"exact count field or null","densityField":"exact density field or null","densityUnit":"people/km2|people/ha|people/mi2 or null","referenceYear":"four-digit population reference year or null","geography":"actual geographic unit or null"},
     "confidence": 0.0,
     "why": "why this source is appropriate"
@@ -111,7 +112,7 @@ Return JSON only with this shape:
   }
 }
 
-For population questions, seek polygons already joined to population counts or density. Populate populationMapping ONLY from documented fields and units. Do not confuse boundary IDs, areas or household counts with population. Do not infer the population reference year from publication year. If only separate statistical tables are available and no joined map service can be verified, say so and use mapAction none. Never invent a unit or field. For other questions omit populationMapping or set it null.\nRank the authoritative, directly mappable source first. confidence must be 0..1.`;
+For population questions, seek polygons already joined to population counts or density. Populate populationMapping ONLY from documented fields and units. Do not confuse boundary IDs, areas or household counts with population. Do not infer the population reference year from publication year. If separate statistical tables are available, you may return the boundary service as mapAction and populationJoin with a direct CSV or JSON table URL, its source metadata URL and exact documented geographic identifiers. Join fields must refer to the same geography and boundary vintage. If table has multiple rows per geography, specify filter {field,value} only when documented to select the desired total/year. Do not join by guessed names. If no documented matching identifiers or supported table are available, use mapAction none. Only populate populationJoin when it is needed and verified, otherwise null. Never invent a unit or field. For other questions omit populationMapping or set it null.\nRank the authoritative, directly mappable source first. confidence must be 0..1.`;
 
   const prompt = `${instructions}
 
